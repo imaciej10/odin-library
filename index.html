@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js"></script>
+    <title>Digital Library</title>
+  </head>
+  <body>
+    <div class="header">
+      <div class="title">digital library</div>
+    </div>
+    <div class="sidebar">
+      <div class="button-container">
+        <button class="add" data-modal-target="#modal">Add to library</button>
+        <button class="removeAll">Clean library</button>
+      </div>
+      <div class="caption">
+        <div class="about">Made for The Odin Project</div>
+        <!--         insert img -->
+      </div>
+    </div>
+    <div class="main">
+      <div class="card" id="0">
+        <p class="book-title"></p>
+        <p class="author"></p>
+        <img class="thumbnail" src="" alt="cover" />
+        <button class="remove" id="xd">Remove</button>
+      </div>
+      <div class="card" id="1">
+        <p class="book-title"></p>
+        <p class="author"></p>
+        <img class="thumbnail" src="" alt="cover" />
+        <button class="remove">Remove</button>
+      </div>
+      <div class="card" id="2">
+        <p class="book-title"></p>
+        <p class="author"></p>
+        <img class="thumbnail" src="" alt="cover" />
+        <button class="remove">Remove</button>
+      </div>
+      <div id="overlay"></div>
+      <div class="modal" id="modal">
+        <button class="escape" data-close-button>&times;</button>
+        <form action="results.html" method="GET" class="new-book">
+          <label for="title">Book Title</label>
+          <input
+            type="text"
+            id="title"
+            name="bookTitle"
+            placeholder="Flowers for Algernon"
+            required
+          />
+
+          <label for="author">Book Author</label>
+          <input
+            type="text"
+            id="author"
+            name="bookAuthor"
+            placeholder="Daniel Keyes"
+            required
+          />
+
+          <label for="image">Image</label>
+          <input type="text" id="image" />
+
+          <label for="read">Read</label>
+          <input type="checkbox" id="read" name="read" />
+          <button class="add" type="submit">Add</button>
+          <button class="back">Back</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
