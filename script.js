@@ -1,12 +1,13 @@
 document.addEventListener("DOMContentLoaded", function (event) {
-  function Book(title, author, pages, read) {
+  function Book(title, author, pages, read, image = "") {
     (this.title = title),
       (this.author = author),
       (this.pages = pages),
       (this.read = read),
-      (Book.prototype.toggleRead = function () {
-        this.read = !this.read;
-      });
+      (this.image = image);
+    Book.prototype.toggleRead = function () {
+      this.read = !this.read;
+    };
   }
 
   function addBookToLibrary() {
@@ -26,15 +27,21 @@ document.addEventListener("DOMContentLoaded", function (event) {
     const bookElement = document.getElementById(index);
     const bookTitle = bookElement.querySelector("p.book-title");
     const bookAuthor = bookElement.querySelector("p.author");
+    const bookPages = bookElement.querySelector("p.pages");
+    const isRead = bookElement.querySelector("#is-read");
 
     bookTitle.textContent = myLibrary[index].title;
     bookAuthor.textContent = myLibrary[index].author;
+    bookPages.textContent = myLibrary[index].pages + " pages";
+
+    if (myLibrary[index].read === true) {
+      isRead.checked = true;
+    }
   }
 
   function removeBook(bookID) {
     const booksContainer = document.querySelector("div.main");
-    let selected = bookID;
-    const book = document.getElementById(selected);
+    const book = document.getElementById(bookID);
     booksContainer.removeChild(book);
   }
 
@@ -55,19 +62,76 @@ document.addEventListener("DOMContentLoaded", function (event) {
     overlay.classList.remove("active");
   }
 
+  function createDivElement(className) {
+    const div = document.createElement("div");
+    div.classList.add(className);
+    return div;
+  }
+
+  function createParagraphElement(className, string) {
+    const para = document.createElement("p");
+    para.classList.add(className);
+    para.textContent = string;
+    return para;
+  }
+
+  function createButtonElement(className) {
+    const button = document.createElement("button");
+    button.classList.add(className);
+    button.textContent = "Remove";
+    return button;
+  }
+
+  function createImageElement(className, source = "image/cover.jpg") {
+    const cover = document.createElement("img");
+    cover.classList.add(className);
+
+    cover.src = source;
+    return cover;
+  }
+
+  function createCheckboxElement(id, read) {
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.id = id;
+    if (read === true) checkbox.checked = true;
+    return checkbox;
+  }
+
+  function createLabelElement(check) {
+    const label = document.createElement("label");
+    label.setAttribute("for", check);
+    label.textContent = "Read";
+    return label;
+  }
+
+  function getInputVales() {
+    const bookTitle = document.getElementById("title").value;
+    const bookAuthor = document.getElementById("author").value;
+    const read = document.getElementById("read").checked;
+    const pages = document.getElementById("pages").value;
+
+    return new Book(bookTitle, bookAuthor, pages, read);
+  }
+
   let myLibrary = [];
 
-  const harry = new Book("Harry Potter", "JKR", 294, true);
-  const plastus = new Book("Plastusiowy Pamietnik", "Szymborska", 69, true);
-  const diuna = new Book("Diuna", "el Korniko", 203, false);
+  const meditations = new Book("Meditations", "Marcus Aurelius", 304, true);
+  const coffee = new Book(
+    "Before the Coffee Gets Cold",
+    "Toshikazu Kawaguchi",
+    240,
+    false
+  );
+  const algernon = new Book("Flowers for Algernon", "Daniel Keyes", 311, true);
 
-  myLibrary.push(harry, plastus, diuna);
+  myLibrary.push(meditations, coffee, algernon);
 
   const addButton = document.querySelector("button[data-modal-target]");
   const closeModalButton = document.querySelector("button[data-close-button]");
   const removeAllButton = document.querySelector("button.removeAll");
-  const removeButtons = document.querySelectorAll("button.remove");
   const backModalButton = document.querySelector("button.back");
+  const form = document.querySelector("form.new-book");
 
   for (let book in myLibrary) {
     updateBookCards(book);
@@ -97,12 +161,67 @@ document.addEventListener("DOMContentLoaded", function (event) {
     myLibrary = [];
   });
 
-  removeButtons.forEach((button) =>
-    button.addEventListener("click", (event) => {
+  document.addEventListener("change", function (event) {
+    if (event.target.id === "is-read") {
+      const bookID = event.target.parentNode.parentNode.id;
+      myLibrary[bookID].toggleRead();
+    }
+  });
+
+  document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("remove")) {
       let target = event.target.parentNode.id;
       removeBook(target);
       updateIDs();
       myLibrary.splice(target, 1);
-    })
-  );
+    }
+  });
+
+  var uploadedImageFile = null;
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    var fileInput = document.getElementById("image");
+
+    const modal = form.closest(".modal");
+    const bookSet = document.querySelector(".main");
+
+    const myBook = getInputVales();
+    const newBook = createDivElement("card");
+
+    const newTitle = createParagraphElement("book-title", myBook.title);
+    const newAuthor = createParagraphElement("author", myBook.author);
+    const newPages = createParagraphElement("pages", myBook.pages);
+    const newCheckbox = createCheckboxElement("is-read", myBook.read);
+    const newCover = createImageElement("thumbnail");
+    const newCheckboxContainer = createDivElement("checkbox");
+    const newLabel = createLabelElement("is-read");
+    const newButton = createButtonElement("remove");
+
+    if (fileInput.files && fileInput.files[0]) {
+      uploadedImageFile = fileInput.files[0];
+      var reader = new FileReader();
+      reader.onload = function (event) {
+        var imageUrl = event.target.result;
+        return (newCover.src = imageUrl);
+      };
+      reader.readAsDataURL(uploadedImageFile);
+    }
+
+    bookSet.appendChild(newBook);
+    newBook.appendChild(newTitle);
+    newBook.appendChild(newAuthor);
+    newBook.appendChild(newPages);
+    newBook.appendChild(newCover);
+    newBook.appendChild(newCheckboxContainer);
+    newCheckboxContainer.appendChild(newLabel);
+    newCheckboxContainer.appendChild(newCheckbox);
+    newBook.appendChild(newButton);
+
+    myLibrary.push(myBook);
+    updateIDs();
+    closeModal(modal);
+    form.reset();
+  });
 });
