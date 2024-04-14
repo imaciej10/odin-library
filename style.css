@@ -13,8 +13,21 @@
 }
 
 input#author:invalid,
-input#title:invalid {
-  border-color: red;
+input#title:invalid,
+input#pages:invalid {
+  border: 3px red solid;
+}
+
+input#author:valid,
+input#title:valid {
+  border: 3px green solid;
+}
+
+.logo:hover {
+  transform: scale(1.1);
+}
+.caption:hover {
+  transform: scale(1.1);
 }
 
 label[for="title"]::after,
@@ -24,6 +37,11 @@ label[for="author"]::after {
   font-size: 1.2rem;
   font-weight: bold;
   margin-left: 0.3rem;
+}
+
+label[for="image"]:hover,
+button:hover {
+  transform: scale(0.95);
 }
 
 body {
@@ -44,7 +62,7 @@ body {
   background-color: var(--main-color);
   display: grid;
   overflow: auto;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 1rem 2rem;
   padding: 2rem;
 }
@@ -58,17 +76,22 @@ body {
 }
 
 .card {
-  height: 400px;
+  height: 500px;
   width: 250px;
-  gap: 0.5rem;
+  gap: 0.3rem;
   border: 0.2rem black solid;
   background-color: var(--card-color);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  padding: 3rem 1rem;
+  padding: 0.5rem 1rem;
   color: white;
+}
+
+.completed {
+  border-color: green;
+  background-color: rgb(0, 128, 0, 0.6);
 }
 
 .logo {
@@ -76,6 +99,7 @@ body {
   width: auto;
   margin-left: 0.5rem;
 }
+
 .title {
   width: 100%;
   height: 100%;
@@ -110,49 +134,55 @@ body {
   margin-bottom: 0.5rem;
 }
 
-#is-read {
+#is-read,
+input#read {
   width: 1.2rem;
   height: auto;
 }
 .sidebar .addBook,
 .removeAll,
 .remove {
-  padding: 0.5rem 2rem;
+  padding: 0.4rem 2rem;
   font-size: 1.1rem;
   text-align: center;
   color: white;
   border-color: white;
   background-color: var(--card-color);
-  width: 65%;
+  width: 68%;
   border-radius: 0.5rem;
 }
 
 button.add,
 button.back {
-  padding: 0.5rem 2rem;
+  padding: 0 2rem;
+  border-radius: 0.5rem;
+  border: none;
+  font-size: 1.2rem;
+  height: 70%;
+  text-align: center;
+  box-shadow: 0.5rem 1rem 2rem rgba(0, 0, 0, 0.35);
+  outline: none;
 }
 
 button.add {
   grid-column: 1/2;
+  background-color: green;
 }
 
 button.back {
   grid-column: 2/3;
-  justify-self: end;
+  background-color: red;
+  grid-area: 9 / 2 / 10 / 4;
 }
 
 .thumbnail {
   width: 100%;
-  height: 76%;
+  height: 70%;
   border-radius: 1rem;
-}
-
-button.remove {
-  margin-bottom: 1rem;
+  border: 2px solid white;
 }
 
 .book-title {
-  margin-top: 1.2rem;
   font-size: 1.3rem;
   font-weight: 500;
   width: 100%;
@@ -179,17 +209,20 @@ button.remove {
 
 .modal {
   position: fixed;
-  background-color: white;
+  background-color: var(--sidebar-color);
+  color: white;
   top: 50%;
   left: 50%;
   border: 1px solid white;
   border-radius: 10px;
-  padding: 1rem;
+  justify-items: center;
+  align-items: center;
+  padding: 0.5rem;
   transform: translate(-50%, -50%) scale(0);
   transition: 200ms ease-in-out;
   display: grid;
-  row-gap: 1rem;
-  grid-template: 1fr 6fr 1fr / repeat(2, 1fr);
+  row-gap: 0.2rem;
+  grid-template: 1fr 6fr / repeat(2, 1fr);
   height: 500px;
   z-index: 3;
   width: 300px;
@@ -201,6 +234,15 @@ button.remove {
   transition: 200ms ease-in-out;
 }
 
+input#image {
+  display: none;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  align-self: center;
+  justify-self: center;
+  grid-column: 1/3;
+  white-space: nowrap;
+}
 .escape {
   grid-area: 1 / 1 / 2 / 3;
   border: none;
@@ -215,14 +257,33 @@ button.remove {
 }
 
 form.new-book {
-  grid-area: 2 / 1 / 3 / 3;
+  grid-area: 1/ 1 / 3 / 3;
   display: grid;
-  grid-template: repeat(10, 1fr) / 1fr 1fr;
+  margin-top: 0;
+  grid-template: repeat(9, 1fr) / 1fr 1fr;
   justify-items: center;
+  height: 100%;
 }
 
 label[for="title"] {
   grid-area: 1 / 1 / 2 / 4;
+  place-self: center;
+}
+
+input[type="file"] {
+  width: 100%;
+}
+
+input#author,
+input#title,
+input#pages {
+  padding: 10px;
+  border-radius: 0.5rem;
+  border: 1px solid rgb(128, 128, 128, 0.25);
+  background: black;
+  outline: none;
+  color: #fff;
+  font-size: 1.2rem;
 }
 
 input#title {
@@ -231,6 +292,7 @@ input#title {
 
 label[for="author"] {
   grid-area: 3 / 1 / 4 / 4;
+  place-self: center;
 }
 
 input#author {
@@ -239,19 +301,39 @@ input#author {
 
 label[for="image"] {
   grid-area: 7/ 1 / 8 / 4;
+  display: inline-block;
+  color: #fff;
+  background: blue;
+  text-align: center;
+  padding: 0.5rem 1.2rem;
+  letter-spacing: 0.05rem;
+  margin: 0.8rem;
+  text-transform: uppercase;
+  box-shadow: 0.5rem 1rem 2rem rgba(0, 0, 0, 0.35);
+  border-radius: 0.3rem;
+  place-self: center;
+  user-select: none;
 }
 
 input#image {
   grid-area: 8 / 1 / 9 / 4;
 }
 label[for="read"] {
-  grid-area: 9 / 1 / 10 / 3;
+  grid-area: 8 / 1 / 9 / 3;
+  user-select: none;
   justify-self: start;
   align-self: center;
 }
 
+label[for="read"],
+label[for="is-read"] {
+  pointer-events: none;
+  user-select: none;
+}
+
 label[for="pages"] {
   grid-area: 5 / 1 / 6 / 4;
+  place-self: center;
 }
 
 input#pages {
@@ -259,7 +341,7 @@ input#pages {
 }
 
 input#read {
-  grid-area: 9 / 3 / 10 / 4;
+  grid-area: 8 / 3 / 9 / 4;
 }
 
 input[type="text"],

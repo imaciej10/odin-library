@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
   let myLibrary = [];
 
-  const meditations = new Book("Meditations", "Marcus Aurelius", 304, true);
+  const meditations = new Book("Meditations", "Marcus Aurelius", 304, false);
   const coffee = new Book(
     "Before the Coffee Gets Cold",
     "Toshikazu Kawaguchi",
@@ -146,16 +146,25 @@ document.addEventListener("DOMContentLoaded", function (event) {
   removeAllButton.addEventListener("click", () => {
     const booksCollection = document.querySelectorAll("div.card");
 
-    booksCollection.forEach((book) => {
-      book.remove();
-    });
-    myLibrary = [];
+    var result = window.confirm("Are you sure?");
+
+    if (result) {
+      booksCollection.forEach((book) => {
+        book.remove();
+        myLibrary = [];
+      });
+    }
   });
 
   document.addEventListener("change", function (event) {
     if (event.target.id === "is-read") {
       const bookID = event.target.parentNode.parentNode.id;
       myLibrary[bookID].toggleRead();
+      if (event.target.checked === true) {
+        document.getElementById(bookID).classList.add("completed");
+      } else {
+        document.getElementById(bookID).classList.remove("completed");
+      }
     }
   });
 
@@ -180,6 +189,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     const myBook = getInputVales();
     const newBook = createDivElement("card");
+
+    if (myBook.read === true) {
+      newBook.classList.add("completed");
+    }
 
     const newTitle = createParagraphElement("book-title", myBook.title);
     const newAuthor = createParagraphElement("author", myBook.author);
