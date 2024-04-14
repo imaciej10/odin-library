@@ -10,19 +10,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
     };
   }
 
-  function addBookToLibrary() {
-    title = prompt("Book title: ");
-    author = prompt("Author: ");
-    pages = parseInt(prompt("Number of pages: "));
-    read = prompt("Have you read it?");
-
-    myLibrary.push(new Book(title, author, pages, read));
-  }
-
-  function removeFromLibrary(index) {
-    return myLibrary.splice(index, 1);
-  }
-
   function updateBookCards(index) {
     const bookElement = document.getElementById(index);
     const bookTitle = bookElement.querySelector("p.book-title");
@@ -114,6 +101,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
     return new Book(bookTitle, bookAuthor, pages, read);
   }
 
+  function isFileInput(fileInput) {
+    return fileInput.files && fileInput.files[0];
+  }
+
   let myLibrary = [];
 
   const meditations = new Book("Meditations", "Marcus Aurelius", 304, true);
@@ -199,7 +190,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     const newLabel = createLabelElement("is-read");
     const newButton = createButtonElement("remove");
 
-    if (fileInput.files && fileInput.files[0]) {
+    if (isFileInput(fileInput)) {
       uploadedImageFile = fileInput.files[0];
       var reader = new FileReader();
       reader.onload = function (event) {
@@ -210,14 +201,15 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }
 
     bookSet.appendChild(newBook);
-    newBook.appendChild(newTitle);
-    newBook.appendChild(newAuthor);
-    newBook.appendChild(newPages);
-    newBook.appendChild(newCover);
-    newBook.appendChild(newCheckboxContainer);
-    newCheckboxContainer.appendChild(newLabel);
-    newCheckboxContainer.appendChild(newCheckbox);
-    newBook.appendChild(newButton);
+    newBook.append(
+      newTitle,
+      newAuthor,
+      newPages,
+      newCover,
+      newCheckboxContainer,
+      newButton
+    );
+    newCheckboxContainer.append(newLabel, newCheckbox);
 
     myLibrary.push(myBook);
     updateIDs();

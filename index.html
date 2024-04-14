@@ -14,12 +14,14 @@
     </div>
     <div class="sidebar">
       <div class="button-container">
-        <button class="add" data-modal-target="#modal">Add to library</button>
+        <button class="addBook" data-modal-target="#modal">
+          Add to library
+        </button>
         <button class="removeAll">Clean library</button>
       </div>
       <div class="caption">
         <div class="about">Made for The Odin Project</div>
-        <!--         insert img -->
+        <img src="image/penguin.png" class="logo" alt="cute penguin" />
       </div>
     </div>
     <div class="main">
@@ -66,6 +68,7 @@
             id="title"
             name="bookTitle"
             placeholder="Flowers for Algernon"
+            aria-label="required"
             required
           />
 
@@ -76,6 +79,7 @@
             name="bookAuthor"
             placeholder="Daniel Keyes"
             minlength="3"
+            aria-label="required"
             required
           />
 
