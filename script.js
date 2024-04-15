@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     const para = document.createElement("p");
     para.classList.add(className);
     para.textContent = string;
-    if (className === "pages") para.textContent += " pages";
+    if (className === "pages" && string !== "") para.textContent += " pages";
     return para;
   }
 
