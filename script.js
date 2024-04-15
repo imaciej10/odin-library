@@ -59,6 +59,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     const para = document.createElement("p");
     para.classList.add(className);
     para.textContent = string;
+    if (className === "pages") para.textContent += " pages";
     return para;
   }
 
@@ -123,10 +124,19 @@ document.addEventListener("DOMContentLoaded", function (event) {
   const removeAllButton = document.querySelector("button.removeAll");
   const backModalButton = document.querySelector("button.back");
   const form = document.querySelector("form.new-book");
+  const label = document.getElementById("file-label");
+  const imageInput = document.getElementById("image");
+  var fileInput = document.getElementById("image");
 
   for (let book in myLibrary) {
     updateBookCards(book);
   }
+
+  imageInput.addEventListener("change", () => {
+    if (isFileInput(fileInput)) {
+      label.classList.add("fileUploaded");
+    }
+  });
 
   closeModalButton.addEventListener("click", () => {
     const modal = closeModalButton.closest(".modal");
@@ -177,12 +187,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }
   });
 
-  var uploadedImageFile = null;
-
   form.addEventListener("submit", function (event) {
     event.preventDefault();
-
-    var fileInput = document.getElementById("image");
 
     const modal = form.closest(".modal");
     const bookSet = document.querySelector(".main");
@@ -225,6 +231,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     newCheckboxContainer.append(newLabel, newCheckbox);
 
     myLibrary.push(myBook);
+    label.classList.remove("fileUploaded");
     updateIDs();
     closeModal(modal);
     form.reset();

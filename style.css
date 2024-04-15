@@ -105,6 +105,7 @@ body {
   height: 100%;
   font-size: 4rem;
   text-transform: uppercase;
+  letter-spacing: 0.08rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -143,10 +144,9 @@ input#read {
 .removeAll,
 .remove {
   padding: 0.4rem 2rem;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   text-align: center;
   color: white;
-  border-color: white;
   background-color: var(--card-color);
   width: 68%;
   border-radius: 0.5rem;
@@ -186,6 +186,7 @@ button.back {
   font-size: 1.3rem;
   font-weight: 500;
   width: 100%;
+  margin: 0;
   text-align: center;
 }
 
@@ -313,6 +314,7 @@ label[for="image"] {
   border-radius: 0.3rem;
   place-self: center;
   user-select: none;
+  position: relative;
 }
 
 input#image {
@@ -331,6 +333,10 @@ label[for="is-read"] {
   user-select: none;
 }
 
+label.fileUploaded {
+  background: green;
+}
+
 label[for="pages"] {
   grid-area: 5 / 1 / 6 / 4;
   place-self: center;
@@ -347,6 +353,12 @@ input#read {
 input[type="text"],
 input[type="number"] {
   width: 100%;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 label {

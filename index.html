@@ -69,6 +69,7 @@
             name="bookTitle"
             placeholder="Flowers for Algernon"
             aria-label="required"
+            maxlength="30"
             required
           />
 
@@ -79,14 +80,16 @@
             name="bookAuthor"
             placeholder="Daniel Keyes"
             minlength="3"
+            maxlength="25"
             aria-label="required"
+            pattern="[A-Za-z]+"
             required
           />
 
           <label for="pages">Pages</label>
-          <input type="number" id="pages" name="pages" min="10" max="2000" />
+          <input type="number" id="pages" name="pages" min="10" max="5000" />
 
-          <label for="image">Upload Cover</label>
+          <label for="image" id="file-label">Upload Cover</label>
           <input type="file" id="image" accept="image/*" />
 
           <label for="read">Have you read it?</label>
