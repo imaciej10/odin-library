@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     return label;
   }
 
-  function getInputVales() {
+  function getInputValues() {
     const bookTitle = document.getElementById("title").value;
     const bookAuthor = document.getElementById("author").value;
     const read = document.getElementById("read").checked;
@@ -193,7 +193,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     const modal = form.closest(".modal");
     const bookSet = document.querySelector(".main");
 
-    const myBook = getInputVales();
+    const myBook = getInputValues();
     const newBook = createDivElement("card");
 
     if (myBook.read === true) {
@@ -235,5 +235,48 @@ document.addEventListener("DOMContentLoaded", function (event) {
     updateIDs();
     closeModal(modal);
     form.reset();
+  });
+
+  //form validation
+
+  const title = document.getElementById("title");
+  const author = document.getElementById("author");
+
+  title.addEventListener("input", (event) => {
+    const titleValue = title.value.trim();
+
+    if (titleValue === "") {
+      title.setCustomValidity("Please fill out title name");
+    } else if (titleValue.length < 3) {
+      title.setCustomValidity(
+        `Title name too short, it should be at least 3 characters, you used ${titleValue.length}`
+      );
+    } else if (titleValue.length > 25) {
+      title.setCustomValidity(
+        `Title name too short, it should be at max 25 characters, you used ${titleValue.length}`
+      );
+    } else {
+      title.setCustomValidity("");
+    }
+  });
+
+  author.addEventListener("input", (event) => {
+    const authorValue = author.value.trim();
+
+    if (authorValue === "") {
+      author.setCustomValidity("Please fill out book name");
+    } else if (authorValue.length < 3) {
+      author.setCustomValidity(
+        `Author's name too short, should be at least 3 characters, you entered ${author.value.length} characters`
+      );
+    } else if (authorValue.length > 22) {
+      author.setCustomValidity(
+        `Author's name too long, should be max 22 characters, you entered ${author.value.length} characters`
+      );
+    } else if (!/^[A-Za-z\s]+$/.test(authorValue)) {
+      author.setCustomValidity("Please only use letters A-Z");
+    } else {
+      author.setCustomValidity("");
+    }
   });
 });
