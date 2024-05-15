@@ -274,7 +274,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         `Author's name too long, should be max 22 characters, you entered ${author.value.length} characters`
       );
     } else if (!/^[A-Za-z\s]+$/.test(authorValue)) {
-      author.setCustomValidity("Please only use letters A-Z");
+      author.setCustomValidity("Please only use letters A-Z and spaces");
     } else {
       author.setCustomValidity("");
     }
